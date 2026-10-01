@@ -38,7 +38,7 @@ export function identifyTopics(query: string, topics = TOPICS): TopicMatch[] {
 export interface RetrieveOptions {
   matchedTopics?: TopicMatch[];
   limit?: number;
-  /** للاختبار: حقن مادة بديلة دون المساس بالمصفوفة الأساسية. */
+  /** يسمح بتحديد corpus مخصص عند الحاجة إلى معالجة مصدر مختلف. */
   corpus?: CorpusChunk[];
 }
 

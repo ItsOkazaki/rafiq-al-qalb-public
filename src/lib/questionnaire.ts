@@ -81,7 +81,7 @@ export interface QuestionnaireResult {
 
 /**
  * حل مسار الاستبانة: مجال مختار + أسئلة تضييق أجيب عنها بنعم.
- * حتمي بالكامل؛ مناسب للاختبار لكل تركيبة إجابات.
+ * حتمي بالكامل؛ مناسب لإعادة إنتاج مسار البحث نفسه لنفس المدخلات.
  */
 export function resolveQuestionnairePath(
   areaId: string,
@@ -123,25 +123,4 @@ export function resolveQuestionnairePath(
     .join("، ")}.`;
 
   return { topics, keywords: keywords.slice(0, 8), query };
-}
-
-/** كل تركيبات المسارات الممكنة — تستخدمها الاختبارات. */
-export function allQuestionnairePaths(): { areaId: string; refinementIds: string[] }[] {
-  const paths: { areaId: string; refinementIds: string[] }[] = [];
-  for (const area of QUESTIONNAIRE_AREAS) {
-    const qs = REFINEMENT_QUESTIONS.filter((q) => q.areaId === area.id);
-    paths.push({ areaId: area.id, refinementIds: [] });
-    for (const q of qs) {
-      paths.push({ areaId: area.id, refinementIds: [q.id] });
-    }
-    if (qs.length >= 2) {
-      paths.push({ areaId: area.id, refinementIds: qs.map((q) => q.id) });
-    }
-  }
-  return paths;
-}
-
-export function validateQuestionnaireTopics(): boolean {
-  const ids = new Set(TOPICS.map((t) => t.id));
-  return QUESTIONNAIRE_AREAS.every((a) => a.topicIds.every((id) => ids.has(id)));
 }

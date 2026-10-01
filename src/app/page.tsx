@@ -38,9 +38,7 @@ export default function HomePage() {
             </h1>
             <OrnamentDivider tone="gold" />
             <p className="mx-auto mt-6 max-w-2xl text-base leading-9 text-parchment-200/90 sm:text-lg sm:leading-10">
-              مساعد بحث علمي يستقبل وصفك لأي موضوع، فيحدد مسار البحث، ويقترح الكلمات
-              المفتاحية، ويسترجع لك المادة الفعلية من المصادر المعتمدة وحدها — مع اسم
-              المصدر وموضعه ورابط الأصل — ثم ينظّمها لك تنظيماً علمياً.
+              أداة حوارية تستقبل وصف المستخدم للموضوع، وتحدّد بابه البحثي ضمن مكتبة مصنّفة، ثم تسترجع المحتوى حصراً من مصادر مفهرسة مسبقًا. وتعرض النتائج بصورة منظّمة وقابلة للتتبّع، مع ذكر اسم المصدر، والجزء أو الصفحة، والرابط الرسمي للمصدر الأصلي.
               <span className="mt-2 block font-semibold text-brass-200">
                 لا يشخّص حالات، ولا يُصدر فتاوى، ولا يصف علاجاً.
               </span>
@@ -59,7 +57,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 rounded-full border border-parchment-100/30 px-7 py-3 text-sm font-semibold text-parchment-100 transition-colors hover:border-brass-300/60 hover:text-brass-200"
               >
                 <Compass className="size-4.5" strokeWidth={2} />
-                الاستبانة البحثية
+                لمحة بحثية
               </Link>
             </div>
           </div>
@@ -106,8 +104,8 @@ export default function HomePage() {
             },
             {
               icon: SlidersHorizontal,
-              title: "تنظيم مستند",
-              desc: "ينظّم المسترجَع تنظيماً علمياً: تلخيص مقيَّد بالمقاطع نفسها، ويمتنع صراحة حين لا تكفي المادة المعتمدة.",
+              title: "نظّم ووثّق",
+              desc: "يعرض المادة المسترجعة مرتبةً وقابلةً للتحقق: ملخّص مقيَّد بالمقاطع نفسها فقط، ويمتنع صراحةً حين لا تكفي المادة المفهرسة.",
             },
           ].map(({ icon: Icon, title, desc }, i) => (
             <div key={title} className="card-manuscript group rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-lift">
@@ -142,7 +140,7 @@ export default function HomePage() {
                   سجل المصادر المعتمدة
                 </Link>
                 <Link href="/wasfa" className="link-brass mt-2.5 text-sm font-medium">
-                  ماذا عن صفحة «الوصفة»؟
+                  لماذا لا نصف علاجاً؟
                 </Link>
               </div>
             </div>
@@ -234,6 +232,56 @@ export default function HomePage() {
                   الاسترجاع منه مفعّل بعد فحص الموضع والمصدر
                 </p>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── البنية التقنية — لجنة التحكيم ─────────────────────────── */}
+      <section className="border-t border-parchment-300 bg-parchment-50 py-16">
+        <div className="mx-auto max-w-5xl px-5">
+          <header className="text-center">
+            <h2 className="heading-display text-2xl font-bold text-forest-800">البنية التقنية الفعلية</h2>
+            <p className="mt-2 text-sm text-ink-500">الأدوات والتقنيات المستخدمة فعلياً في الكود — لا وصف تسويقي</p>
+          </header>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                label: "معالجة اللغة الطبيعية",
+                value: "خوارزمية عربية مخصصة للتطبيع والتوكين (normalizeArabic / tokenizeArabic)",
+                note: "تشمل تطبيع الهمزات، وإزالة التشكيل، ومعالجة الصيغ المختلفة للكلمات والمترادفات، ودعم بعض الصيغ العامية الشائعة.",
+              },
+              {
+                label: "محرك الاسترجاع (RAG)",
+                value: "استرجاع قائم على الكلمات المفتاحية مع تعزيز الموضوع (Keyword + Topic Boost)",
+                note: "لا يعتمد على قاعدة بيانات متجهية، ولا يسترجع من الإنترنت المفتوح؛ بل يعمل حصراً على محتوى مفهرس مسبقًا ومحدّد داخل المكتبة.",
+              },
+              {
+                label: "سجل المصادر",
+                value: "سجل مصادر ثابت ومحدد داخل المشروع",
+                note: "تُضمّن مواد المكتبة في المشروع ضمن Corpus ثابت ومفهرس مسبقًا، مع بيانات المصدر والموضع والرابط الأصلي.",
+              },
+              {
+                label: "نموذج الذكاء الاصطناعي",
+                value: "OpenAI GPT-4o-mini (اختياري)",
+                note: "يمكن استخدامه عند الحاجة، لكن النظام يعمل بصورة كاملة بدونه، ويعتمد افتراضيًا على مسار حتمي قائم على الاسترجاع والقواعد المحددة مسبقًا.",
+              },
+              {
+                label: "آلية الامتناع والتحقق (Guarded Generation)",
+                value: "عتبة ثقة للاسترجاع (MIN_PASSAGE_SCORE = 3) مع فحص السلامة والفتوى والوصف",
+                note: "تعتمد على مجموعة من ضوابط التحقق، وفي حال عدم استيفاء الشروط المطلوبة، يمتنع النظام عن توليد إجابة ويعرض رسالة امتناع مناسبة.",
+              },
+              {
+                label: "الواجهة والنشر",
+                value: "Next.js 16 (App Router) — Vercel",
+                note: "الخطوط المستخدمة: Amiri + IBM Plex Sans Arabic + Aref Ruqaa، وجميعها مرخّصة بموجب SIL Open Font License (OFL).",
+              },
+            ].map(({ label, value, note }) => (
+              <div key={label} className="card-manuscript rounded-2xl p-5">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-brass-600">{label}</p>
+                <p className="mt-2 text-sm font-semibold leading-7 text-ink-800">{value}</p>
+                <p className="mt-1 text-[11px] leading-5 text-ink-500">{note}</p>
+              </div>
             ))}
           </div>
         </div>
